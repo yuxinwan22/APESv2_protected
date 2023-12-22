@@ -157,7 +157,7 @@ neighbor2point_block:
     idx_mode:
     - sparse_col_sqr
     - sparse_col_sqr
-  attention:
+  attention: # feature learning layers
     K:
     - 32
     - 32
