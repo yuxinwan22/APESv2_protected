@@ -164,6 +164,7 @@ datasets/
 results/
 wandb/
 artifacts/
+configs/
 # don't ignore subfolder datasets
 !*/datasets/
 

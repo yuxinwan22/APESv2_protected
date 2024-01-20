@@ -1,8 +1,9 @@
 wandb:
   enable: true
-  entity: ???
-  project: ???
-  name: ???
+  api_key: ???  # your wandb api key
+  entity: ???  # the place to save your runs. can be your wandb username or team name
+  project: ???  # the name of your project
+  name: ???  # the name your rundata
 train:
   epochs: 200
   lr: 0.0001
@@ -214,6 +215,7 @@ neighbor2point_block:
     - 128
     - 128
     - 128
+    fl_which: p2p
 test:  # only valid when running the test script
   suffix:
     enable: false

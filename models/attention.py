@@ -103,9 +103,20 @@ class Neighbor2PointAttention(nn.Module):
         return x
 
 class Point2PointAttention(nn.Module):
-    def __init__(self, q_in=64, q_out=64, k_in=64, k_out=64, v_in=64, v_out=64, num_heads=8,
-                 ff_conv1_channels_in=64, ff_conv1_channels_out=128,
-                 ff_conv2_channels_in=128, ff_conv2_channels_out=64):
+    def __init__(self, config_attention, layer):
+        num_heads               = config_attention.num_heads[layer]
+        self.attention_mode     = config_attention.attention_mode[layer]
+        q_in                    = config_attention.q_in[layer]
+        q_out                   = config_attention.q_out[layer]
+        k_in                    = config_attention.k_in[layer]
+        k_out                   = config_attention.k_out[layer]
+        v_in                    = config_attention.v_in[layer] 
+        v_out                   = config_attention.v_out[layer]
+        ff_conv1_channels_in    = config_attention.ff_conv1_channels_in[layer]
+        ff_conv1_channels_out   = config_attention.ff_conv1_channels_out[layer]
+        ff_conv2_channels_in    = config_attention.ff_conv2_channels_in[layer]
+        ff_conv2_channels_out   = config_attention.ff_conv2_channels_out[layer]
+        
         super(Point2PointAttention, self).__init__()
         # check input values
         if q_in != k_in or q_in != v_in or k_in != v_in:

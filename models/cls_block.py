@@ -11,6 +11,7 @@ class Neighbor2PointAttentionBlock(nn.Module):
         downsample_which        = config_n2p_block.downsample.ds_which
         ff_conv2_channels_out   = config_n2p_block.attention.ff_conv2_channels_out
         self.res_link_enable    = config_n2p_block.res_link.enable
+        fl_which                = config_n2p_block.attention.fl_which
         
         super(Neighbor2PointAttentionBlock, self).__init__()
         self.embedding_list = nn.ModuleList([embedding.EdgeConv(config_n2p_block.embedding, layer) for layer in range(len(config_n2p_block.embedding.K))])
@@ -24,7 +25,12 @@ class Neighbor2PointAttentionBlock(nn.Module):
             self.downsample_list = nn.ModuleList([downsample.DownSampleInsert(config_n2p_block.downsample, layer) for layer in range(len(config_n2p_block.downsample.M))])
         else:
             raise ValueError('Only global_carve and local_insert are valid for ds_which!')
-        self.neighbor2point_list = nn.ModuleList([attention.Neighbor2PointAttention(config_n2p_block.attention, layer) for layer in range(len(config_n2p_block.attention.K))])
+        if fl_which == 'n2p':
+            self.neighbor2point_list = nn.ModuleList([attention.Neighbor2PointAttention(config_n2p_block.attention, layer) for layer in range(len(config_n2p_block.attention.K))])
+        elif fl_which == 'p2p':
+            self.neighbor2point_list = nn.ModuleList([attention.Point2PointAttention(config_n2p_block.attention, layer) for layer in range(len(config_n2p_block.attention.K))])
+        else:
+            raise ValueError('Only n2p and p2p are valid for fl_which!')
         
         if self.res_link_enable:
             self.conv_list = nn.ModuleList([nn.Conv1d(channel_in, 1024, kernel_size=1, bias=False) for channel_in in ff_conv2_channels_out])

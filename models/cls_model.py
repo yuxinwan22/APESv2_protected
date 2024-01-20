@@ -8,32 +8,11 @@ class ModelNetModel(nn.Module):
 
         super(ModelNetModel, self).__init__()
 
-        # num_enabled_blocks = neighbor2point_enable + point2point_enable + edgeconv_enable
-        # if num_enabled_blocks != 1:
-        #     raise ValueError(f'Only one of neighbor2point_block, point2point_block and edgecov_block should be enabled, but got {num_enabled_blocks} block(s) enabled!')
-
         if config.neighbor2point_block.enable:
             self.block = cls_block.Neighbor2PointAttentionBlock(config.neighbor2point_block)
             num_layers = len(config.neighbor2point_block.attention.K)
         else:
             raise ValueError('This time only support neighbor2point block!')
-        # if point2point_enable:
-        #     self.block = block.Point2PointAttentionBlock(point2point_egdeconv_emb_K, point2point_egdeconv_emb_group_type,
-        #                                            point2point_egdeconv_emb_conv1_in, point2point_egdeconv_emb_conv1_out, point2point_egdeconv_emb_conv2_in, point2point_egdeconv_emb_conv2_out,
-        #                                            point2point_down_which, point2point_downsample_M, point2point_down_q_in, point2point_down_q_out, point2point_down_k_in,
-        #                                            point2point_down_k_out, point2point_down_v_in, point2point_down_v_out, point2point_down_num_heads,
-        #                                            point2point_q_in, point2point_q_out, point2point_k_in, point2point_k_out, point2point_v_in,
-        #                                            point2point_v_out, point2point_num_heads, point2point_ff_conv1_in, point2point_ff_conv1_out, point2point_ff_conv2_in, point2point_ff_conv2_out)
-        #     num_layers = len(point2point_q_in)
-        # if edgeconv_enable:
-        #     self.block = block.EdgeConvBlock(egdeconv_emb_K, egdeconv_emb_group_type, egdeconv_emb_conv1_in,
-        #                                egdeconv_emb_conv1_out, egdeconv_emb_conv2_in, egdeconv_emb_conv2_out,
-        #                                edgeconv_downsample_which, edgeconv_downsample_M, edgeconv_downsample_q_in, edgeconv_downsample_q_out,
-        #                                edgeconv_downsample_k_in, edgeconv_downsample_k_out, edgeconv_downsample_v_in,
-        #                                edgeconv_downsample_v_out, edgeconv_downsample_num_heads,
-        #                                edgeconv_K, edgeconv_group_type, edgeconv_conv1_channel_in, edgeconv_conv1_channel_out,
-        #                                edgeconv_conv2_channel_in, edgeconv_conv2_channel_out)
-        #     num_layers = len(edgeconv_K)
 
         self.res_link_enable = config.neighbor2point_block.res_link.enable
 

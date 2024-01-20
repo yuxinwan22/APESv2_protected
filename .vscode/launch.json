@@ -1,0 +1,109 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "train_modelnet.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/train_modelnet.py",
+            "args": ["datasets=modelnet_AnTao420M",
+                    "usr_config=${workspaceFolder}/configs/cls-global_carve-sparse_col_sqr-nocloss.yaml"            
+                    ],
+            "cwd": "${workspaceFolder}",
+            "env": {},
+            "console": "integratedTerminal"
+        },
+
+        {
+            "name": "test_modelnet.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/test_modelnet.py",
+            "args": ["datasets=modelnet_AnTao420M",
+                    "usr_config=${workspaceFolder}/configs/cls-global_carve-sparse_col_sqr-nocloss.yaml"            
+                    ],
+            "cwd": "${workspaceFolder}",
+            "env": {},
+            "console": "integratedTerminal"
+        },
+
+        {
+            "name": "train_comparison.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/train_comparison.py",
+            "args": ["datasets=modelnet_Alignment1024",
+                    "usr_config=${workspaceFolder}/configs/comp-M512-boltzmann.yaml"            
+                    ],
+            "cwd": "${workspaceFolder}",
+            "env": {},
+            "console": "integratedTerminal"
+        },
+
+        {
+            "name": "test_comparison.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/test_comparison.py",
+            "args": ["datasets=modelnet_Alignment1024",
+                    "usr_config=${workspaceFolder}/configs/comp-M512-boltzmann.yaml"            
+                    ],
+            "cwd": "${workspaceFolder}",
+            "env": {},
+            "console": "integratedTerminal"
+        },
+
+        {
+            "name": "train_shapenet.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/train_shapenet.py",
+            "args": ["datasets=shapenet_AnTao350M",
+                    "usr_config=${workspaceFolder}/configs/seg_bin.yaml"            
+                    ],
+            "cwd": "${workspaceFolder}",
+            "env": {},
+            "console": "integratedTerminal"
+        },
+
+        {
+            "name": "train_shapenet_Normal",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/train_shapenet.py",
+            "args": ["datasets=shapenet_Normal",
+                    "usr_config=${workspaceFolder}/configs/seg_Normal.yaml"            
+                    ],
+            "cwd": "${workspaceFolder}",
+            "env": {},
+            "console": "integratedTerminal"
+        },
+
+        {
+            "name": "test_shapenet.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/test_shapenet.py",
+            "args": ["datasets=shapenet_AnTao350M",
+                    "usr_config=${workspaceFolder}/configs/seg_bin.yaml"            
+                    ],
+            "cwd": "${workspaceFolder}",
+            "env": {},
+            "console": "integratedTerminal"
+        },
+
+        {
+            "name": "test_shapenet_Normal",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/test_shapenet.py",
+            "args": ["datasets=shapenet_Normal",
+                    "usr_config=${workspaceFolder}/configs/seg_Normal.yaml"            
+                    ],
+            "cwd": "${workspaceFolder}",
+            "env": {},
+            "console": "integratedTerminal"
+        },
+    ]
+
+}
