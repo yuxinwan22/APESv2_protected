@@ -438,8 +438,6 @@ class DownSampleCarve(nn.Module):
     def attention_scoring(self, q, k): # q.shape == (B, H, N, D), k.shape == (B, H, D, N)
         if self.asm == "dot":
             energy = q @ k # energy.shape == (B, H, N, N)
-        elif self.asm == "dot-sub":
-            energy = q @ (q.transpose(-1, -2) - k) # Q@(Q-K) energy.shape == (B, H, N, N)
         elif self.asm == "l2":
             energy = -1 * ops.l2_global(q, k) # -(Q-K)^2 energy.shape == (B, H, N, N)
         elif self.asm == "l2+":
@@ -771,7 +769,7 @@ class DownSampleInsert(nn.Module):
         else:
             raise ValueError('Please check the setting of asm!')
         scale_factor = math.sqrt(q.shape[-1])
-        attention = self.softmax(energy / scale_factor) # attention.shape == (B, H, N, N)
+        attention = self.softmax(energy / scale_factor) # attention.shape == (B, H, N, 1, K)
         return attention
     
     def res_block(self, x, x_ds): # x.shape == (B, C, N), x_ds.shape == (B, C, M)

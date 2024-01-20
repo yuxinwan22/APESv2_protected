@@ -216,6 +216,7 @@ neighbor2point_block:
     - 128
     - 128
     fl_which: p2p
+    asm: [l2, l2, l2]
 test:  # only valid when running the test script
   suffix:
     enable: false

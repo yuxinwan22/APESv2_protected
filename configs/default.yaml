@@ -182,7 +182,7 @@ neighbor2point_block:
   downsample:
     ds_which: global_carve   # global or local or global_carve or local_insert
     M: [1024, 512]
-    asm: [dot, dot]  # attention scoring method: dot, sub, add, dot-sub, l2, l2+, dot-neighbor
+    asm: [dot, dot]  # attention scoring method: dot, dot-sub, l2, l2+
     res: # residual link in downsample module
       enable: [false, false]
       ff: [false, false]
@@ -225,6 +225,7 @@ neighbor2point_block:
     num_heads: [4, 4]
   attention: # feature learning layers
     fl_which: n2p # n2p or p2p
+    asm: [dot, dot, dot, dot, dot]  # attention scoring method: dot, dot-sub, l2, l2+, if attention mode is vector_sub, asm is not used
     K: [16, 16, 16, 16, 16]  # 3 values in the list means neighbor2point_block includes 3 neighbor2point layers. The 'K' for each layer is 40, 40 and 40 respectively
     attention_mode: [scalar_dot, scalar_dot, scalar_dot, scalar_dot, scalar_dot] # scalar_dot, vector_sub
     group_type: [diff, diff, diff, diff, diff]  # diff, neighbor, center_neighbor or center_diff
