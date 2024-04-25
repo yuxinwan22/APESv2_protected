@@ -3,6 +3,7 @@ from torch import nn
 from utils import ops
 import math
 import torch.nn.functional as F
+import time
 
 class GumbleSoftmax(nn.Module):
     def __init__(self, tau: float = 1, hard: bool = False, eps: float = 1e-10, dim: int = -1):
@@ -369,6 +370,7 @@ class DownSampleCarve(nn.Module):
                 raise ValueError(f'pe_mode must be III or IV, Got{self.pe_mode}!')
             
     def forward(self, x, x_xyz=None):
+        t_ds_start = time.time()
         # x.shape == (B, C, N)
         if self.bin_enable and self.bin_mode == "mode1":
             x, self.bin_prob = self.bin_conv(x)
@@ -427,6 +429,10 @@ class DownSampleCarve(nn.Module):
         
         x_dropped = v_dropped.reshape(v_dropped.shape[0], v_dropped.shape[1], -1).permute(0, 2, 1)
         # v_dropped.shape == (B, C, N-M)
+        t_ds_end = time.time()
+        print(f"Downsample start time: {t_ds_start}")
+        print(f"Downsample end time: {t_ds_end}")
+        print(f"Downsample time: {t_ds_end - t_ds_start}")
         return (x_ds, self.idx), (x_dropped, idx_dropped)
 
     def split_heads(self, x, heads, depth):

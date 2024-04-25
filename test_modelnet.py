@@ -14,6 +14,7 @@ from utils.visualization import *
 from utils.visualization_data_processing import *
 from utils.check_config import set_config_run
 from utils.save_backup import save_backup
+import time
 
 
 @hydra.main(version_base=None, config_path="./configs", config_name="default.yaml")
@@ -143,11 +144,12 @@ def test(local_rank, config):
     if config.test.visualize_attention_heatmap.enable:
         for idx_mode in vis_test_gather_dict["heatmap"].keys():
             vis_test_gather_dict["heatmap"][idx_mode] = [[] for _ in range(len(config.neighbor2point_block.downsample.M))]
-
+    num_samples = test_loader.batch_sampler.sampler.num_samples
     with torch.no_grad():
         if rank == 0:
             print(f'Print Results: {config.test.print_results} - Visualize Downsampled Points: {config.test.visualize_downsampled_points.enable} - Visualize Heatmap: {config.test.visualize_attention_heatmap.enable}')
             pbar = pkbar.Pbar(name='Start testing, please wait...', target=len(test_loader))
+        t_start = time.time()
         for i, (samples, cls_labels) in enumerate(test_loader):
             samples, cls_labels = samples.to(device), cls_labels.to(device)
             preds = my_model(samples)
@@ -179,7 +181,12 @@ def test(local_rank, config):
                 loss /= config.test.ddp.nproc_this_node
                 loss_list.append(loss.detach().cpu().numpy())
                 pbar.update(i)
-
+        t_end = time.time()
+        t_test_sum = t_end - t_start
+        t_pcd = t_test_sum / num_samples
+        print(f'Testing time: {t_test_sum}s')
+        print(f'number of point cloud: {num_samples}')
+        print(f'Testing time per point cloud: {t_pcd*1000}ms')
     if rank == 0:
         preds = np.concatenate(pred_list, axis=0)
         cls_labels = np.concatenate(cls_label_list, axis=0)

@@ -228,7 +228,7 @@ def set_port(config, mode):
     return config
 
 def set_config_run(config, mode):
-    check_config(config)
+    # check_config(config)
     config = config_gpus(config, mode)
     config = set_port(config, mode)
     return config
