@@ -432,7 +432,7 @@ class DownSampleCarve(nn.Module):
         t_ds_end = time.time()
         print(f"Downsample start time: {t_ds_start}")
         print(f"Downsample end time: {t_ds_end}")
-        print(f"Downsample time: {t_ds_end - t_ds_start}")
+        print(f"Downsample time: {(t_ds_end - t_ds_start)*1000}ms")
         return (x_ds, self.idx), (x_dropped, idx_dropped)
 
     def split_heads(self, x, heads, depth):
