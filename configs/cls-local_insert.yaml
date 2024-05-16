@@ -4,7 +4,6 @@ wandb:
   entity: ???  # the place to save your runs. can be your wandb username or team name
   project: ???  # the name of your project
   name: ???  # the name your rundata
-train:
   epochs: 1
   lr: 0.0001
   lr_scheduler:
@@ -39,7 +38,7 @@ train:
     selected_points: 2048
     fps: false
     combine_trainval: true
-    batch_size_per_gpu: 32
+    batch_size_per_gpu: 16
     num_workers: 4
     prefetch: ${train.dataloader.batch_size_per_gpu}
     pin_memory: true
@@ -127,7 +126,7 @@ neighbor2point_block:
     - 64
     - 64
   downsample:
-    ds_which: global_carve
+    ds_which: local_insert
     M:
     - 1024
     - 512
@@ -222,7 +221,7 @@ test:  # only valid when running the test script
     enable: false
     remark: debug
   dataloader:
-    batch_size_per_gpu: 8
+    batch_size_per_gpu: 16
     num_workers: 2  # ${test.ddp.nproc_this_node}  # the number of subprocess to load data
   ddp:
     which_gpu: [3]

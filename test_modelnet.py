@@ -145,14 +145,20 @@ def test(local_rank, config):
         for idx_mode in vis_test_gather_dict["heatmap"].keys():
             vis_test_gather_dict["heatmap"][idx_mode] = [[] for _ in range(len(config.neighbor2point_block.downsample.M))]
     num_samples = test_loader.batch_sampler.sampler.num_samples
+    t_sum = 0.0
     with torch.no_grad():
         if rank == 0:
             print(f'Print Results: {config.test.print_results} - Visualize Downsampled Points: {config.test.visualize_downsampled_points.enable} - Visualize Heatmap: {config.test.visualize_attention_heatmap.enable}')
             pbar = pkbar.Pbar(name='Start testing, please wait...', target=len(test_loader))
-        t_start = time.time()
         for i, (samples, cls_labels) in enumerate(test_loader):
             samples, cls_labels = samples.to(device), cls_labels.to(device)
+            t_start = time.time()
+            print(f'model start time: {t_start}')
             preds = my_model(samples)
+            t_end = time.time()
+            print(f'model time: {(t_end - t_start)*1000}ms')
+            t_pcd = t_end - t_start
+            t_sum += t_pcd
             
             if config.train.aux_loss.enable:
                 preds = preds[-1]
@@ -181,12 +187,10 @@ def test(local_rank, config):
                 loss /= config.test.ddp.nproc_this_node
                 loss_list.append(loss.detach().cpu().numpy())
                 pbar.update(i)
-        t_end = time.time()
-        t_test_sum = t_end - t_start
-        t_pcd = t_test_sum / num_samples
-        print(f'Testing time: {t_test_sum}s')
+       
+        # t_pcd = t_sum / num_samples
         print(f'number of point cloud: {num_samples}')
-        print(f'Testing time per point cloud: {t_pcd*1000}ms')
+        # print(f'Testing time per point cloud: {t_pcd*1000}ms')
     if rank == 0:
         preds = np.concatenate(pred_list, axis=0)
         cls_labels = np.concatenate(cls_label_list, axis=0)

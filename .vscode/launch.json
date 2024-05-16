@@ -104,6 +104,19 @@
             "env": {},
             "console": "integratedTerminal"
         },
+
+        {
+            "name": "flops_params.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/flops_params.py",
+            "args": ["datasets=modelnet_AnTao420M",
+                    "usr_config=${workspaceFolder}/configs/cls-global_carve-sparse_col_sqr-nocloss.yaml"            
+                    ],
+            "cwd": "${workspaceFolder}",
+            "env": {},
+            "console": "integratedTerminal"
+        },
     ]
 
 }

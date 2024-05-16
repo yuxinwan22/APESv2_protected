@@ -4,6 +4,7 @@ from utils import ops
 from models import embedding
 from models import attention
 from models import downsample
+import time
 
 
 class Neighbor2PointAttentionBlock(nn.Module):
@@ -56,7 +57,15 @@ class Neighbor2PointAttentionBlock(nn.Module):
             res_link_list = []
             res_link_list.append(self.conv_list[0](x).max(dim=-1)[0])
             for i in range(len(self.downsample_list)):
+                t_start = time.time()
                 (x, idx_select) = self.downsample_list[i](x, x_xyz)[0]
+                t_end = time.time()
+                if i == 0:
+                    t0 = t_end - t_start
+                    print(f'1st downsample end time: {t_end}')
+                    print(f'1st downsample time: {(t0)*1000}ms')
+                elif i == 1:
+                    print(f'2nd downsample end time: {t_end}')
                 x = self.neighbor2point_list[i+1](x)
                 x_xyz = ops.gather_by_idx(x_xyz, idx_select)
                 res_link_list.append(self.conv_list[i+1](x).max(dim=-1)[0])
