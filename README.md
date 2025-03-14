@@ -1,5 +1,4 @@
 # APESv2
-
 <p>
 <a href="https://arxiv.org/pdf/2302.14673.pdf">
     <img src="https://img.shields.io/badge/PDF-arXiv-brightgreen" /></a>
@@ -8,7 +7,7 @@
 <a href="https://pytorch.org/">
     <img src="https://img.shields.io/badge/Framework-PyTorch-orange" /></a>
 </p>
-
+⚠️ Note: This repository contains a development version of the project. The final release version is not public yet.
 # APESv1
 https://github.com/JunweiZheng93/APES#apes-attention-based-point-cloud-edge-sampling
 
